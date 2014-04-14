@@ -37,6 +37,7 @@ public class CTMTParser
     private static int maxAnswers = 1;
     private static String imgPath = "None";
     private static String errors = "<HTML><BODY BGCOLOR=#D6D9DF>";
+    private static int numOfWBQ = 0;
     /**
      * Attempts to parse the specified CTMT file.
      * @param filePath the path of the CTMT file to parse
@@ -88,6 +89,7 @@ public class CTMTParser
         driveSubFolder="Error";
         forceFullScreen=0;
         testTimeLimit=0.0;
+        numOfWBQ = 0;
         errors = "<HTML><BODY BGCOLOR=#D6D9DF>";
     }
 
@@ -172,6 +174,11 @@ public class CTMTParser
         if(qText.equals("Error")){errors = errors + "<BR>No Question Text found around line " + linenum;}
         if(!qType.equals("MULTIPLECHOICE") && !qType.equals("FREERESPONSE") && !qType.equals("WORDBANK")){errors = errors + "<BR>No Question Type found around line " + linenum;}
         if(qAnswers.isEmpty() && qType.equals("MULTIPLECHOICE")){errors = errors + "<BR>No ANSWERCHOICE(s) for multiple choice question found around line " + linenum;}
+        if(qType.equals("WORDBANK")){numOfWBQ++;
+        if(numOfWBQ > WordBankMan.getPristineWordBank().size()){
+        errors = errors + "<BR>The number of words in the word bank is less than the amount of questions using the word bank.";
+        }
+        }
         qNum = -1;
         qText = "Error";
         qType = "Error";    

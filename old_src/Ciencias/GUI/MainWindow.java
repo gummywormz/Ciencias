@@ -8,6 +8,7 @@ package Ciencias.GUI;
 import Ciencias.Core.Question;
 import Ciencias.Managers.GoogleDriveManager;
 import Ciencias.Managers.QArray;
+import Ciencias.Managers.TestEditorManager;
 import Ciencias.Managers.UserAnswerManager;
 import Ciencias.Managers.WordBankMan;
 import Ciencias.Parsers.CTMTParser;
@@ -22,8 +23,6 @@ import static java.lang.Boolean.TRUE;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -147,6 +146,35 @@ private String frText;
         answerQ = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         debugExporter = new javax.swing.JFileChooser();
+        testEdit = new javax.swing.JFrame();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
+        headerEdit = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        qList = new javax.swing.JList();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        headList = new javax.swing.JList();
+        editHead = new javax.swing.JDialog();
+        jLabel17 = new javax.swing.JLabel();
+        random = new javax.swing.JComboBox();
+        jLabel18 = new javax.swing.JLabel();
+        appendPeriod = new javax.swing.JComboBox();
+        userNames = new javax.swing.JComboBox();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        testName = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        driveSubFolder = new javax.swing.JTextField();
+        driveFolderRoot = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        wordBank = new javax.swing.JTextField();
+        saveHead = new javax.swing.JButton();
         takeATest = new javax.swing.JButton();
         createATest = new javax.swing.JButton();
         loadResults = new javax.swing.JButton();
@@ -207,6 +235,7 @@ private String frText;
         jScrollPane6.setPreferredSize(new java.awt.Dimension(300, 300));
 
         questionText.setText("Question Text");
+        questionText.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jScrollPane6.setViewportView(questionText);
 
         advTestButton.setText("Advanced ->");
@@ -222,26 +251,23 @@ private String frText;
             testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(testWindowLayout.createSequentialGroup()
                 .addGroup(testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testWindowLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(advTestButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(previousQuestion)
-                        .addGap(18, 18, 18)
-                        .addComponent(nextQuestion))
                     .addGroup(testWindowLayout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 110, Short.MAX_VALUE))
+                    .addGroup(testWindowLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(questionNum)
+                            .addComponent(advTestButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(testWindowLayout.createSequentialGroup()
-                                .addGap(85, 85, 85)
-                                .addComponent(questionNum))
-                            .addGroup(testWindowLayout.createSequentialGroup()
-                                .addGap(151, 151, 151)
-                                .addGroup(testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(testWindowLayout.createSequentialGroup()
-                                        .addGap(2, 2, 2)
-                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 19, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(previousQuestion)
+                                .addGap(18, 18, 18)
+                                .addComponent(nextQuestion))
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testWindowLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -251,13 +277,15 @@ private String frText;
         testWindowLayout.setVerticalGroup(
             testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(testWindowLayout.createSequentialGroup()
-                .addGap(109, 109, 109)
                 .addGroup(testWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(testWindowLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(testWindowLayout.createSequentialGroup()
+                        .addGap(77, 77, 77)
                         .addComponent(questionNum)
-                        .addGap(0, 120, Short.MAX_VALUE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subResponse)
@@ -1069,6 +1097,195 @@ private String frText;
         debugExporter.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         debugExporter.setDialogTitle("Ciencias Test Manager - Save Debug Log");
 
+        testEdit.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        testEdit.setTitle("Ciencias Test Manager - Create / Edit Test");
+
+        jButton1.setText("Finish");
+
+        jButton4.setText("Load");
+
+        jLabel15.setText("Header / Test Settings:");
+
+        headerEdit.setText("Edit");
+        headerEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                headerEditActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Help");
+
+        qList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane10.setViewportView(qList);
+
+        jButton7.setText("Edit");
+
+        jButton8.setText("New");
+
+        jLabel16.setText("Test Questions:");
+
+        headList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane11.setViewportView(headList);
+
+        javax.swing.GroupLayout testEditLayout = new javax.swing.GroupLayout(testEdit.getContentPane());
+        testEdit.getContentPane().setLayout(testEditLayout);
+        testEditLayout.setHorizontalGroup(
+            testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(testEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(testEditLayout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addComponent(jLabel16)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+            .addGroup(testEditLayout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addComponent(headerEdit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton7)
+                .addGap(78, 78, 78))
+        );
+        testEditLayout.setVerticalGroup(
+            testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testEditLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane10)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headerEdit)
+                    .addComponent(jButton7)
+                    .addComponent(jButton8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton4)
+                    .addComponent(jButton6))
+                .addContainerGap())
+        );
+
+        editHead.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        editHead.setTitle("Ciencias Test Manager - Edit Test Settings");
+        editHead.setAlwaysOnTop(true);
+
+        jLabel17.setText("Question Randomization");
+
+        random.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disabled", "Enabled" }));
+
+        jLabel18.setText("Append Period Names on Upload");
+
+        appendPeriod.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disabled", "Enabled" }));
+
+        userNames.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disabled", "Enabled" }));
+
+        jLabel19.setText("Show User Names on Test Data Display");
+
+        jLabel20.setText("Test Name");
+
+        testName.setText("Test Name");
+
+        jLabel21.setText("Drive Sub Folder");
+
+        driveSubFolder.setText("Drive Sub Folder");
+
+        driveFolderRoot.setText("Drive Folder Root");
+
+        jLabel22.setText("Drive Folder Root");
+
+        jLabel23.setText("Word Bank");
+
+        wordBank.setText("Enter words separated by commas");
+
+        saveHead.setText("OK");
+        saveHead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveHeadActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout editHeadLayout = new javax.swing.GroupLayout(editHead.getContentPane());
+        editHead.getContentPane().setLayout(editHeadLayout);
+        editHeadLayout.setHorizontalGroup(
+            editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editHeadLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel23))
+                .addGap(323, 323, 323)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(userNames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(appendPeriod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(random, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(testName)
+                        .addComponent(driveFolderRoot)
+                        .addComponent(driveSubFolder)
+                        .addComponent(wordBank)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editHeadLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveHead)
+                .addContainerGap())
+        );
+        editHeadLayout.setVerticalGroup(
+            editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editHeadLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(random, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(appendPeriod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addGap(30, 30, 30)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userNames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
+                .addGap(27, 27, 27)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(testName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(driveFolderRoot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22))
+                .addGap(27, 27, 27)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(driveSubFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(editHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(wordBank, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(saveHead)
+                .addContainerGap())
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ciencias Test Manager");
         setResizable(false);
@@ -1683,6 +1900,28 @@ catch ( IOException e)
         }
     }//GEN-LAST:event_googleAuthSubmitActionPerformed
 
+    private void headerEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerEditActionPerformed
+       editHead.show();
+       editHead.pack();
+    }//GEN-LAST:event_headerEditActionPerformed
+
+    private void saveHeadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveHeadActionPerformed
+        TestEditorManager.setRandomize(random.getSelectedIndex());
+        TestEditorManager.setPeriodAppend(appendPeriod.getSelectedIndex());
+        TestEditorManager.setUserNames(userNames.getSelectedIndex());
+        TestEditorManager.setTestName(testName.getText());
+        TestEditorManager.setDriveFolderRoot(driveFolderRoot.getText());
+        TestEditorManager.setDriveSubFolder(driveSubFolder.getText());
+        DefaultListModel lm = new DefaultListModel();
+        lm.addElement("ENABLERANDOMIZATION="+TestEditorManager.getRandomization());
+        lm.addElement("APPENDPERIOD="+TestEditorManager.getAppendPeriod());
+        lm.addElement("ENABLEUSERNAMES="+TestEditorManager.getEnableUserNames());
+        lm.addElement("TESTNAME="+TestEditorManager.getTestName());
+        lm.addElement("DRIVEFOLDERROOT="+TestEditorManager.getDriveFolderRoot());
+        lm.addElement("DRIVESUBFOLDER="+TestEditorManager.getDriveSubFolder());
+        headList.setModel(lm);
+    }//GEN-LAST:event_saveHeadActionPerformed
+
     private void finalizeTest(){
         if(addAnswer() == 0){return;}
     if(UserAnswerManager.hasNull()){
@@ -1747,6 +1986,7 @@ catch ( IOException e)
     private java.awt.Button advancedMenu;
     private javax.swing.JButton answerQ;
     private javax.swing.JFrame answerReview;
+    private static javax.swing.JComboBox appendPeriod;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton changeAnswer;
     private javax.swing.JButton closeGo;
@@ -1757,7 +1997,10 @@ catch ( IOException e)
     private javax.swing.JFileChooser debugExporter;
     private javax.swing.JMenuItem debugMode;
     private javax.swing.JRadioButton direct;
+    private static javax.swing.JTextField driveFolderRoot;
     private javax.swing.JFrame drivePrompt;
+    private static javax.swing.JTextField driveSubFolder;
+    private javax.swing.JDialog editHead;
     private static javax.swing.JDialog errorBox;
     private java.awt.Button errorClose;
     private static javax.swing.JTextPane errorText;
@@ -1771,9 +2014,16 @@ catch ( IOException e)
     private javax.swing.JTextField googleAuth;
     private java.awt.Button googleAuthSubmit;
     private javax.swing.JLabel googleLink;
+    private static javax.swing.JList headList;
+    private javax.swing.JButton headerEdit;
     private javax.swing.JLabel img;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1781,7 +2031,16 @@ catch ( IOException e)
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1792,6 +2051,8 @@ catch ( IOException e)
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1816,19 +2077,26 @@ catch ( IOException e)
     private javax.swing.JTextField periodField;
     private javax.swing.JButton previousQuestion;
     private javax.swing.JDialog qJump;
+    private static javax.swing.JList qList;
     private javax.swing.JLabel questionNum;
     private javax.swing.JLabel questionText;
+    private static javax.swing.JComboBox random;
     private javax.swing.JRadioButton relative;
     private java.awt.Button reviewQuestions;
     private java.awt.Button saveAnswers;
     private javax.swing.JFileChooser saveCTMA;
+    private javax.swing.JButton saveHead;
     private javax.swing.JMenuItem skipQuestion;
     private javax.swing.JRadioButton strict;
     private javax.swing.JButton subResponse;
     private javax.swing.JButton takeATest;
+    private javax.swing.JFrame testEdit;
+    private static javax.swing.JTextField testName;
     private javax.swing.JFrame testWindow;
     private java.awt.Button uploadAnswers;
     private javax.swing.JMenuItem uploadFile;
     private javax.swing.JTextField userNameField;
+    private static javax.swing.JComboBox userNames;
+    private static javax.swing.JTextField wordBank;
     // End of variables declaration//GEN-END:variables
 }
