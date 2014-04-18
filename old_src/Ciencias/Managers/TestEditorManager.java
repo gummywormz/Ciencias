@@ -16,6 +16,7 @@ package Ciencias.Managers;
 
 import Ciencias.Core.Question;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Manages the test editor.
@@ -93,6 +94,55 @@ public class TestEditorManager {
     public static void setWordBank(String bank)
     {
         wordBank = bank;
+    }
+    
+    /**
+     * Adds a question to the array.
+     * @param q The question to add
+     */
+    public static void addQuestion(Question q){
+    testQArray.add(q);
+    }
+    
+    /**
+     * Removes the question at the index.
+     * @param index The index to remove.
+     */
+    public static void removeQuestion(int index){
+    testQArray.remove(index);
+    }
+    
+    public static void fixQNums(){
+    for(int i = 0; i < testQArray.size(); i++){
+    Question q = testQArray.get(i);
+    q.setQuestionNumber(i+1);
+    }
+    }
+    
+    /**
+     * Returns a question at the given index.
+     * @param index
+     * @return The question at the given index.
+     */
+    public static Question getQuestion(int index){
+    return testQArray.get(index);
+    }
+    
+    /**
+     * Swaps 2 question in the array.
+     * @param i An index to swap
+     * @param j An index to swap
+     */
+    public static void swapQuestions(int i, int j){
+    Collections.swap(testQArray, i, j);
+    }
+    
+    /**
+     * Returns the QArray
+     * @return The QArray
+     */
+    public static ArrayList<Question> getQArray(){
+    return testQArray;
     }
     
     /**

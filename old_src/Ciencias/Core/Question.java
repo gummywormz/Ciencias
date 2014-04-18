@@ -102,6 +102,14 @@ public class Question{
         return qAnswers;
     }
     
+    /**
+     * Sets the question number of this question
+     * @param num The new number of the question
+     */
+    public void setQuestionNumber(int num){
+    qNum = num;
+    }
+    
     @Override
     public String toString(){
     return "Question " + this.getQuestionNumber();

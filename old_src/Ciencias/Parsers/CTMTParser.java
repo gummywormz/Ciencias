@@ -33,7 +33,6 @@ public class CTMTParser
     private static String qType = "Error"; 
     private static String qTag = "None";
     private static ArrayList<String> qAnswers;
-    //private static ArrayList<String> qWordBank;
     private static int maxAnswers = 1;
     private static String imgPath = "None";
     private static String errors = "<HTML><BODY BGCOLOR=#D6D9DF>";
@@ -90,6 +89,7 @@ public class CTMTParser
         forceFullScreen=0;
         testTimeLimit=0.0;
         numOfWBQ = 0;
+        qAnswers.clear();
         errors = "<HTML><BODY BGCOLOR=#D6D9DF>";
     }
 

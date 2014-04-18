@@ -28,6 +28,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import Ciencias.Managers.NumberVerifier;
+import java.awt.event.ItemEvent;
 
 /**
  * The main GUI window
@@ -49,6 +51,8 @@ private int finalize=0;
 private File file;
 private File sFile;
 private String frText;
+private DefaultListModel qListM = new DefaultListModel();
+private DefaultListModel ansListM = new DefaultListModel();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,7 +81,7 @@ private String frText;
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jFileChooser1 = new javax.swing.JFileChooser();
+        openATest = new javax.swing.JFileChooser();
         errorBox = new javax.swing.JDialog();
         errorClose = new java.awt.Button();
         errorTextold = new javax.swing.JLabel();
@@ -147,18 +151,22 @@ private String frText;
         jLabel14 = new javax.swing.JLabel();
         debugExporter = new javax.swing.JFileChooser();
         testEdit = new javax.swing.JFrame();
-        jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        finishTestEdit = new javax.swing.JButton();
+        loadCTMT = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         headerEdit = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        testEditHelp = new javax.swing.JButton();
         jScrollPane10 = new javax.swing.JScrollPane();
         qList = new javax.swing.JList();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        editQ = new javax.swing.JButton();
+        newQ = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane11 = new javax.swing.JScrollPane();
         headList = new javax.swing.JList();
+        delQ = new javax.swing.JButton();
+        up = new javax.swing.JButton();
+        down = new javax.swing.JButton();
+        clearTest = new javax.swing.JButton();
         editHead = new javax.swing.JDialog();
         jLabel17 = new javax.swing.JLabel();
         random = new javax.swing.JComboBox();
@@ -175,6 +183,40 @@ private String frText;
         jLabel23 = new javax.swing.JLabel();
         wordBank = new javax.swing.JTextField();
         saveHead = new javax.swing.JButton();
+        questionEdit = new javax.swing.JDialog();
+        jLabel24 = new javax.swing.JLabel();
+        qTypeBox = new javax.swing.JComboBox();
+        jLabel25 = new javax.swing.JLabel();
+        qTextEdit = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        qTagEdit = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        qMaxAnswersEdit = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        qImgEdit = new javax.swing.JTextField();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        answerList = new javax.swing.JList();
+        addQuestionOK = new javax.swing.JButton();
+        addAnswer = new javax.swing.JButton();
+        jLabel29 = new javax.swing.JLabel();
+        delAnswer = new javax.swing.JButton();
+        addAnswerDialog = new javax.swing.JDialog();
+        answerTF = new javax.swing.JTextField();
+        okAddAnswer = new javax.swing.JButton();
+        cancelAddAnswer = new javax.swing.JButton();
+        jLabel30 = new javax.swing.JLabel();
+        saveTestFC = new javax.swing.JFileChooser();
+        answerKeyPrompt = new javax.swing.JDialog();
+        answerkeyOK = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        reallyClear = new javax.swing.JDialog();
+        jLabel32 = new javax.swing.JLabel();
+        clearYes = new javax.swing.JButton();
+        clearNo = new javax.swing.JButton();
+        closeTestEditor = new javax.swing.JDialog();
+        jLabel33 = new javax.swing.JLabel();
+        exitTEYes = new javax.swing.JButton();
+        exitTENo = new javax.swing.JButton();
         takeATest = new javax.swing.JButton();
         createATest = new javax.swing.JButton();
         loadResults = new javax.swing.JButton();
@@ -343,9 +385,9 @@ private String frText;
                 .addContainerGap())
         );
 
-        jFileChooser1.setApproveButtonText("Open");
-        jFileChooser1.setDialogTitle("Ciencias Test Manager - Choose A Test");
-        jFileChooser1.setFileFilter(new FileNameExtensionFilter("Test Files", "ctmt"));
+        openATest.setApproveButtonText("Open");
+        openATest.setDialogTitle("Ciencias Test Manager - Choose A Test");
+        openATest.setFileFilter(new FileNameExtensionFilter("Test Files", "ctmt"));
 
         errorBox.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         errorBox.setTitle("Ciencias Test Manager - Error");
@@ -1094,15 +1136,32 @@ private String frText;
                 .addContainerGap())
         );
 
+        debugExporter.setAcceptAllFileFilterUsed(false);
         debugExporter.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         debugExporter.setDialogTitle("Ciencias Test Manager - Save Debug Log");
+        debugExporter.setFileFilter(new FileNameExtensionFilter("Text Files", new String[] { "txt" }));
 
         testEdit.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         testEdit.setTitle("Ciencias Test Manager - Create / Edit Test");
+        testEdit.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                testEditWindowClosing(evt);
+            }
+        });
 
-        jButton1.setText("Finish");
+        finishTestEdit.setText("Finish");
+        finishTestEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finishTestEditActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Load");
+        loadCTMT.setText("Load");
+        loadCTMT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadCTMTActionPerformed(evt);
+            }
+        });
 
         jLabel15.setText("Header / Test Settings:");
 
@@ -1113,19 +1172,57 @@ private String frText;
             }
         });
 
-        jButton6.setText("Help");
+        testEditHelp.setText("Help");
+        testEditHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testEditHelpActionPerformed(evt);
+            }
+        });
 
         qList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane10.setViewportView(qList);
 
-        jButton7.setText("Edit");
+        editQ.setText("Edit");
+        editQ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editQActionPerformed(evt);
+            }
+        });
 
-        jButton8.setText("New");
+        newQ.setText("New");
+        newQ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newQActionPerformed(evt);
+            }
+        });
 
         jLabel16.setText("Test Questions:");
 
         headList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane11.setViewportView(headList);
+
+        delQ.setText("Delete");
+        delQ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delQActionPerformed(evt);
+            }
+        });
+
+        up.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_res/go-up.png"))); // NOI18N
+        up.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                upActionPerformed(evt);
+            }
+        });
+
+        down.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_res/go-down.png"))); // NOI18N
+        down.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downActionPerformed(evt);
+            }
+        });
+
+        clearTest.setText("Clear");
 
         javax.swing.GroupLayout testEditLayout = new javax.swing.GroupLayout(testEdit.getContentPane());
         testEdit.getContentPane().setLayout(testEditLayout);
@@ -1134,28 +1231,40 @@ private String frText;
             .addGroup(testEditLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
-                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(testEditLayout.createSequentialGroup()
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                        .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(up, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(down, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(testEditLayout.createSequentialGroup()
+                        .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(clearTest))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(testEditLayout.createSequentialGroup()
                         .addGap(57, 57, 57)
-                        .addComponent(jButton6)
+                        .addComponent(testEditHelp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
+                        .addComponent(loadCTMT)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addComponent(jLabel16)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(finishTestEdit))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testEditLayout.createSequentialGroup()
+                        .addComponent(delQ)
+                        .addGap(18, 18, 18)
+                        .addComponent(newQ)
+                        .addGap(18, 18, 18)
+                        .addComponent(editQ)
+                        .addGap(25, 25, 25)))
                 .addContainerGap())
             .addGroup(testEditLayout.createSequentialGroup()
                 .addGap(117, 117, 117)
                 .addComponent(headerEdit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7)
-                .addGap(78, 78, 78))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         testEditLayout.setVerticalGroup(
             testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1165,53 +1274,64 @@ private String frText;
                     .addComponent(jLabel15)
                     .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane10)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
+                .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(testEditLayout.createSequentialGroup()
+                        .addComponent(up)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(down))
+                    .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane10)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(headerEdit)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                    .addComponent(editQ)
+                    .addComponent(newQ)
+                    .addComponent(delQ))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                 .addGroup(testEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton4)
-                    .addComponent(jButton6))
+                    .addComponent(finishTestEdit)
+                    .addComponent(loadCTMT)
+                    .addComponent(testEditHelp)
+                    .addComponent(clearTest))
                 .addContainerGap())
         );
 
-        editHead.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         editHead.setTitle("Ciencias Test Manager - Edit Test Settings");
         editHead.setAlwaysOnTop(true);
 
-        jLabel17.setText("Question Randomization");
+        jLabel17.setText("Question Randomization:");
 
         random.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disabled", "Enabled" }));
 
-        jLabel18.setText("Append Period Names on Upload");
+        jLabel18.setText("Append Period Names on Upload:");
 
         appendPeriod.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disabled", "Enabled" }));
 
         userNames.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disabled", "Enabled" }));
 
-        jLabel19.setText("Show User Names on Test Data Display");
+        jLabel19.setText("Show User Names on Test Data Display:");
 
-        jLabel20.setText("Test Name");
+        jLabel20.setText("Test Name:");
 
         testName.setText("Test Name");
 
-        jLabel21.setText("Drive Sub Folder");
+        jLabel21.setText("Drive Sub Folder:");
 
         driveSubFolder.setText("Drive Sub Folder");
 
         driveFolderRoot.setText("Drive Folder Root");
 
-        jLabel22.setText("Drive Folder Root");
+        jLabel22.setText("Drive Folder Root:");
 
-        jLabel23.setText("Word Bank");
+        jLabel23.setText("Word Bank:");
 
         wordBank.setText("Enter words separated by commas");
+        wordBank.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wordBankActionPerformed(evt);
+            }
+        });
 
         saveHead.setText("OK");
         saveHead.addActionListener(new java.awt.event.ActionListener() {
@@ -1283,6 +1403,318 @@ private String frText;
                     .addComponent(wordBank, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(saveHead)
+                .addContainerGap())
+        );
+
+        jLabel24.setText("Question Type:");
+
+        qTypeBox.setMaximumRowCount(3);
+        qTypeBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Multiple Choice", "Word Bank", "Free Response" }));
+        qTypeBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                qTypeBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel25.setText("Question Text:");
+
+        jLabel26.setText("Question Tag:");
+
+        qTagEdit.setText("None");
+
+        jLabel27.setText("Max Answers:");
+
+        qMaxAnswersEdit.setText("1");
+        qMaxAnswersEdit.setInputVerifier(new NumberVerifier());
+        qMaxAnswersEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                qMaxAnswersEditActionPerformed(evt);
+            }
+        });
+
+        jLabel28.setText("Image:");
+
+        qImgEdit.setText("None");
+        qImgEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                qImgEditActionPerformed(evt);
+            }
+        });
+
+        answerList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane9.setViewportView(answerList);
+
+        addQuestionOK.setText("OK");
+        addQuestionOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addQuestionOKActionPerformed(evt);
+            }
+        });
+
+        addAnswer.setText("Add Answer");
+
+        jLabel29.setText("Answers:");
+
+        delAnswer.setText("Delete Answer");
+        delAnswer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delAnswerActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout questionEditLayout = new javax.swing.GroupLayout(questionEdit.getContentPane());
+        questionEdit.getContentPane().setLayout(questionEditLayout);
+        questionEditLayout.setHorizontalGroup(
+            questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(questionEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(questionEditLayout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(235, 235, 235))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, questionEditLayout.createSequentialGroup()
+                        .addComponent(jLabel25)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTextEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(questionEditLayout.createSequentialGroup()
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qTagEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(questionEditLayout.createSequentialGroup()
+                        .addComponent(jLabel27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(qMaxAnswersEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, questionEditLayout.createSequentialGroup()
+                        .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel28)
+                            .addComponent(jLabel29))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 377, Short.MAX_VALUE)
+                        .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addQuestionOK, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                                .addComponent(qImgEdit))
+                            .addGroup(questionEditLayout.createSequentialGroup()
+                                .addComponent(delAnswer)
+                                .addGap(120, 120, 120)
+                                .addComponent(addAnswer)))
+                        .addContainerGap())))
+        );
+        questionEditLayout.setVerticalGroup(
+            questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(questionEditLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel24)
+                    .addComponent(qTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(qTextEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25))
+                .addGap(37, 37, 37)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26)
+                    .addComponent(qTagEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27)
+                    .addComponent(qMaxAnswersEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(qImgEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28))
+                .addGap(18, 18, 18)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(questionEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addAnswer)
+                    .addComponent(delAnswer))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addQuestionOK)
+                .addContainerGap())
+        );
+
+        okAddAnswer.setText("OK");
+        okAddAnswer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okAddAnswerActionPerformed(evt);
+            }
+        });
+
+        cancelAddAnswer.setText("Cancel");
+        cancelAddAnswer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelAddAnswerActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setText("Type your answer choice below:");
+
+        javax.swing.GroupLayout addAnswerDialogLayout = new javax.swing.GroupLayout(addAnswerDialog.getContentPane());
+        addAnswerDialog.getContentPane().setLayout(addAnswerDialogLayout);
+        addAnswerDialogLayout.setHorizontalGroup(
+            addAnswerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addAnswerDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addAnswerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(answerTF)
+                    .addGroup(addAnswerDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel30)
+                        .addGap(0, 190, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addAnswerDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cancelAddAnswer)
+                        .addGap(6, 6, 6)
+                        .addComponent(okAddAnswer)))
+                .addContainerGap())
+        );
+        addAnswerDialogLayout.setVerticalGroup(
+            addAnswerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addAnswerDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(answerTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(addAnswerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelAddAnswer)
+                    .addComponent(okAddAnswer))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        saveTestFC.setAcceptAllFileFilterUsed(false);
+        saveTestFC.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        saveTestFC.setApproveButtonText("Save");
+        saveTestFC.setDialogTitle("Ciencias Test Manager - Save Test");
+        saveTestFC.setFileFilter(new FileNameExtensionFilter("CTMT files", new String[] { "CTMT"}));
+
+        answerkeyOK.setText("OK");
+        answerkeyOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                answerkeyOKActionPerformed(evt);
+            }
+        });
+
+        jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_res/emblem-important.png"))); // NOI18N
+        jLabel31.setText("<HTML><BODY>Test has been saved. In order to view results, you need to generate an answer key.<BR>To do this, simply take the test and choose the correct answers.");
+
+        javax.swing.GroupLayout answerKeyPromptLayout = new javax.swing.GroupLayout(answerKeyPrompt.getContentPane());
+        answerKeyPrompt.getContentPane().setLayout(answerKeyPromptLayout);
+        answerKeyPromptLayout.setHorizontalGroup(
+            answerKeyPromptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, answerKeyPromptLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(answerkeyOK)
+                .addContainerGap())
+            .addGroup(answerKeyPromptLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        answerKeyPromptLayout.setVerticalGroup(
+            answerKeyPromptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, answerKeyPromptLayout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(answerkeyOK)
+                .addContainerGap())
+        );
+
+        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_res/emblem-important.png"))); // NOI18N
+        jLabel32.setText("Are you sure you want to clear this test?");
+
+        clearYes.setText("Yes");
+        clearYes.setDefaultCapable(false);
+        clearYes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearYesActionPerformed(evt);
+            }
+        });
+
+        clearNo.setText("No");
+        clearNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearNoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout reallyClearLayout = new javax.swing.GroupLayout(reallyClear.getContentPane());
+        reallyClear.getContentPane().setLayout(reallyClearLayout);
+        reallyClearLayout.setHorizontalGroup(
+            reallyClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reallyClearLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel32)
+                .addContainerGap(121, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, reallyClearLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(clearNo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(clearYes)
+                .addContainerGap())
+        );
+        reallyClearLayout.setVerticalGroup(
+            reallyClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reallyClearLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel32)
+                .addGap(18, 18, 18)
+                .addGroup(reallyClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clearYes)
+                    .addComponent(clearNo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_res/emblem-important.png"))); // NOI18N
+        jLabel33.setText("Are you sure you want to close the test editor?");
+
+        exitTEYes.setText("Yes");
+        exitTEYes.setDefaultCapable(false);
+        exitTEYes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitTEYesActionPerformed(evt);
+            }
+        });
+
+        exitTENo.setText("No");
+        exitTENo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitTENoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout closeTestEditorLayout = new javax.swing.GroupLayout(closeTestEditor.getContentPane());
+        closeTestEditor.getContentPane().setLayout(closeTestEditorLayout);
+        closeTestEditorLayout.setHorizontalGroup(
+            closeTestEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(closeTestEditorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel33)
+                .addContainerGap(121, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, closeTestEditorLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exitTENo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(exitTEYes)
+                .addContainerGap())
+        );
+        closeTestEditorLayout.setVerticalGroup(
+            closeTestEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(closeTestEditorLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(closeTestEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exitTEYes)
+                    .addComponent(exitTENo))
                 .addContainerGap())
         );
 
@@ -1382,9 +1814,9 @@ private String frText;
 
     private void takeATestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takeATestActionPerformed
         debugConText.append(LINESEP + "Attempted to create file dialog");
-        int returnVal = jFileChooser1.showOpenDialog(MainWindow.this);
+        int returnVal = openATest.showOpenDialog(MainWindow.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-        file = jFileChooser1.getSelectedFile();
+        file = openATest.getSelectedFile();
         debugConText.append(LINESEP + "Test file was selected: " + file.toString());
             try {
                 CTMTParser.startParsing(file);
@@ -1393,8 +1825,8 @@ private String frText;
             }
             if(CTMTParser.getRandomizationSetting() == 1){QArray.randomize();}
 if(!CTMTParser.getErrors().isEmpty()){throwError(CTMTParser.getErrors());return;}
-renderTest();
 currentIndex=0;
+renderTest();
 jumpTo.setEnabled(true);
 UserAnswerManager.init();
 testWindow.show();
@@ -1561,7 +1993,9 @@ nextQuestion.setText("Next ->");
     }
     
     private void createATestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createATestActionPerformed
-        // TODO add your handling code here:
+       testEdit.show();
+       testEdit.pack();
+       TestEditorManager.initQArray();
     }//GEN-LAST:event_createATestActionPerformed
 
     private void loadResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadResultsActionPerformed
@@ -1697,7 +2131,7 @@ catch ( IOException e)
     private void saveAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAnswersActionPerformed
         int returnVal = saveCTMA.showSaveDialog(MainWindow.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-        sFile = jFileChooser1.getSelectedFile();
+        sFile = openATest.getSelectedFile();
         int didItWork = TextRenderingAssist.testForBadCharacters(userNameField.getText());
         if(didItWork == 1){throwError("Your user name contains illegal characters or is too long.");return;}
         didItWork = TextRenderingAssist.testForBadCharacters(periodField.getText());
@@ -1856,7 +2290,7 @@ catch ( IOException e)
     }
     int returnVal = saveCTMA.showSaveDialog(MainWindow.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-        sFile = jFileChooser1.getSelectedFile();
+        sFile = openATest.getSelectedFile();
         int didItWork = TextRenderingAssist.testForBadCharacters(userNameField.getText());
         if(didItWork == 1){throwError("Your user name contains illegal characters or is too long.");return;}
         didItWork = TextRenderingAssist.testForBadCharacters(periodField.getText());
@@ -1912,6 +2346,7 @@ catch ( IOException e)
         TestEditorManager.setTestName(testName.getText());
         TestEditorManager.setDriveFolderRoot(driveFolderRoot.getText());
         TestEditorManager.setDriveSubFolder(driveSubFolder.getText());
+        if(wordBank.getText().contains(",") || !wordBank.getText().isEmpty() || !wordBank.getText().equals("Enter words separated by commas")){TestEditorManager.setWordBank(wordBank.getText());}
         DefaultListModel lm = new DefaultListModel();
         lm.addElement("ENABLERANDOMIZATION="+TestEditorManager.getRandomization());
         lm.addElement("APPENDPERIOD="+TestEditorManager.getAppendPeriod());
@@ -1919,9 +2354,271 @@ catch ( IOException e)
         lm.addElement("TESTNAME="+TestEditorManager.getTestName());
         lm.addElement("DRIVEFOLDERROOT="+TestEditorManager.getDriveFolderRoot());
         lm.addElement("DRIVESUBFOLDER="+TestEditorManager.getDriveSubFolder());
+        lm.addElement("WORDBANK="+TestEditorManager.getWordBank());
         headList.setModel(lm);
+        editHead.dispose();
     }//GEN-LAST:event_saveHeadActionPerformed
 
+    private void wordBankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wordBankActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wordBankActionPerformed
+
+    private void qMaxAnswersEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qMaxAnswersEditActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_qMaxAnswersEditActionPerformed
+
+    private void qImgEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qImgEditActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_qImgEditActionPerformed
+
+    private void newQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newQActionPerformed
+        questionEdit.show();
+        questionEdit.pack();
+    }//GEN-LAST:event_newQActionPerformed
+
+    private void qTypeBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_qTypeBoxItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED && !qTypeBox.getSelectedItem().equals("Multiple Choice")){
+        setAnswerEditting(false);
+        }else if (evt.getStateChange() == ItemEvent.SELECTED && qTypeBox.getSelectedItem().equals("Multiple Choice")){setAnswerEditting(true);}
+    }//GEN-LAST:event_qTypeBoxItemStateChanged
+
+    private void cancelAddAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelAddAnswerActionPerformed
+        addAnswerDialog.dispose();
+    }//GEN-LAST:event_cancelAddAnswerActionPerformed
+
+    private void okAddAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okAddAnswerActionPerformed
+        if(!answerTF.getText().isEmpty()){ansListM.addElement(answerTF.getText());
+        addAnswerDialog.dispose();
+        }
+    }//GEN-LAST:event_okAddAnswerActionPerformed
+
+    private void delAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delAnswerActionPerformed
+        ansListM.removeElementAt(answerList.getSelectedIndex());
+    }//GEN-LAST:event_delAnswerActionPerformed
+
+    private void addQuestionOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQuestionOKActionPerformed
+        String qTypeTemp;
+        if(qTypeBox.getSelectedItem().equals("Multiple Choice")){
+        qTypeTemp = "MULTIPLECHOICE";
+        }   else if(qTypeBox.getSelectedItem().equals("Word Bank")){
+        qTypeTemp = "WORDBANK";
+        }else {qTypeTemp = "FREERESPONSE";}
+        ArrayList<String> tempAns = new ArrayList<>();
+        for(int i = 0;  i<ansListM.size(); i++ ){
+        tempAns.add(ansListM.get(i).toString());
+        }
+        Question qTemp = new Question(ansListM.size()+1,qTextEdit.getText(),qTypeTemp,qTagEdit.getText(),tempAns,Integer.parseInt(qMaxAnswersEdit.getText()),qImgEdit.getText());
+        TestEditorManager.addQuestion(qTemp);
+        qListM.addElement(qTemp);
+        ansListM.clear();
+        questionEdit.dispose();
+    }//GEN-LAST:event_addQuestionOKActionPerformed
+
+    private void delQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delQActionPerformed
+        int i = qList.getSelectedIndex();
+        qListM.removeElementAt(i);
+        TestEditorManager.removeQuestion(i);
+    }//GEN-LAST:event_delQActionPerformed
+
+    private void editQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editQActionPerformed
+        Question q;
+        try{q=TestEditorManager.getQuestion(qList.getSelectedIndex());}catch(java.lang.IndexOutOfBoundsException e){return;}
+        questionEdit.show();
+        questionEdit.pack();
+        qTextEdit.setText(q.getText());
+        qTagEdit.setText(q.getTag());
+        qMaxAnswersEdit.setText(""+q.getMaxAnswers());
+        qImgEdit.setText(q.getImage());
+        for(String s : q.getAnswers()){
+        ansListM.addElement(s);
+        }
+        String qType = q.getType();
+        if(qType.equals("MULTIPLECHOICE")){
+        qTypeBox.setSelectedIndex(0);
+        setAnswerEditting(true);
+        }else if (qType.equals("WORDBANK")){
+        qTypeBox.setSelectedIndex(1);
+        setAnswerEditting(false);
+        }else{qTypeBox.setSelectedIndex(2);setAnswerEditting(false);}
+    }//GEN-LAST:event_editQActionPerformed
+
+    private void upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upActionPerformed
+        int index = qList.getSelectedIndex();
+        if(index - 1 < 0){return;}
+        TestEditorManager.swapQuestions(index, index-1);
+        qListM.clear();
+        for(Question q : TestEditorManager.getQArray()){
+        qListM.addElement(q);
+        }
+        
+    }//GEN-LAST:event_upActionPerformed
+
+    private void downActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downActionPerformed
+        int index = qList.getSelectedIndex();
+        if(index + 1 > qListM.size()){return;}
+        TestEditorManager.swapQuestions(index, index+1);
+        qListM.clear();
+        for(Question q : TestEditorManager.getQArray()){
+        qListM.addElement(q);
+        }
+    }//GEN-LAST:event_downActionPerformed
+
+    private void finishTestEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishTestEditActionPerformed
+       int returnVal = saveTestFC.showSaveDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+        File f = saveTestFC.getSelectedFile();
+        String testFile;
+        if(!f.getParent().endsWith(".ctmt")){testFile = f.getParent() + ".ctmt";}
+        else{testFile = f.getParent();}
+           try {
+               FileWriter fw = new FileWriter(testFile);
+               fw.write("[START_HEAD]");
+               fw.write(LINESEP);
+               fw.write("ENABLERANDOMIZATION="+TestEditorManager.getRandomization());
+               fw.write(LINESEP);
+               fw.write("WORDBANK="+TestEditorManager.getWordBank());
+               fw.write(LINESEP);
+               fw.write("APPENDPERIOD="+TestEditorManager.getAppendPeriod());
+               fw.write(LINESEP);
+               fw.write("TESTNAME="+TestEditorManager.getTestName());
+               fw.write(LINESEP);
+               fw.write("DRIVEFOLDERROOT="+TestEditorManager.getDriveFolderRoot());
+               fw.write(LINESEP);
+               fw.write("DRIVESUBFOLDER="+TestEditorManager.getDriveSubFolder());
+               fw.write(LINESEP);
+               String ctma = saveTestFC.getSelectedFile().getName();
+               ctma = ctma.replace(".ctmt",".ctma");
+               ctma = ctma.replace(".CTMT",".CTMA");
+               fw.write("CTMANAME="+ctma);
+               fw.write(LINESEP);
+               fw.write("ENABLEUSERNAMES="+TestEditorManager.getEnableUserNames());
+               fw.write(LINESEP);
+               fw.write("[END_HEAD]");
+               fw.write(LINESEP);
+               fw.write(LINESEP);
+               TestEditorManager.fixQNums();
+               for(Question q : TestEditorManager.getQArray()){
+               fw.write("[START_QUESTION]");
+               fw.write(LINESEP);    
+               fw.write("QUESTIONNUMBER="+q.getQuestionNumber());
+               fw.write(LINESEP);
+               fw.write("QUESTIONSTYLE="+q.getType());
+               fw.write(LINESEP);
+               fw.write("QUESTIONTITLE="+q.getText());
+               fw.write(LINESEP);
+               fw.write("QUESTIONTAG="+q.getTag());
+               for(String s : q.getAnswers()){
+               fw.write("ANSWERCHOICE=" + s);
+               fw.write(LINESEP);
+               }
+               fw.write("[END_QUESTION]");
+               fw.write(LINESEP);
+               }
+               fw.close();
+               answerKeyPrompt.show();
+               answerKeyPrompt.pack();
+           } catch (IOException ex) {
+               throwError("Unable to write the test file. Make sure you have appropriate permissions.");
+           }
+        }
+    }//GEN-LAST:event_finishTestEditActionPerformed
+
+    private void loadCTMTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadCTMTActionPerformed
+        int returnVal = openATest.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        file = openATest.getSelectedFile();
+        debugConText.append(LINESEP + "Test file was selected: " + file.toString());
+            try {
+                CTMTParser.startParsing(file);
+            } catch (IOException ex) {
+                throwError("An IOException occured. Make sure you have rights to access the file and it is not in use by any other program.");
+            }
+if(!CTMTParser.getErrors().isEmpty()){throwError(CTMTParser.getErrors());return;}
+DefaultListModel newHead = new DefaultListModel();
+TestEditorManager.setDriveFolderRoot(CTMTParser.getDriveFolderRoot());
+newHead.addElement("DRIVEFOLDERROOT=" + CTMTParser.getDriveFolderRoot());
+driveFolderRoot.setText(CTMTParser.getDriveFolderRoot());
+TestEditorManager.setDriveSubFolder(CTMTParser.getDriveSubFolder());
+newHead.addElement("DRIVESUBFOLDER=" + CTMTParser.getDriveSubFolder());
+driveSubFolder.setText(CTMTParser.getDriveSubFolder());
+TestEditorManager.setPeriodAppend(CTMTParser.getAppendPeriodSetting());
+newHead.addElement("APPENDPERIOD=" + CTMTParser.getAppendPeriodSetting());
+appendPeriod.setSelectedIndex(CTMTParser.getAppendPeriodSetting());
+TestEditorManager.setRandomize(CTMTParser.getRandomizationSetting());
+newHead.addElement("ENABLERANDOMIZATION=" + CTMTParser.getRandomizationSetting());
+random.setSelectedIndex(CTMTParser.getRandomizationSetting());
+TestEditorManager.setUserNames(CTMTParser.getEnableUserNamesSetting());
+newHead.addElement("ENABLEUSERNAMES=" + CTMTParser.getEnableUserNamesSetting());
+userNames.setSelectedIndex(CTMTParser.getEnableUserNamesSetting());
+String wb = "";
+for(String s : WordBankMan.getPristineWordBank()){
+wb = wb + s +",";
+}
+TestEditorManager.setWordBank(wb);
+newHead.addElement("WORDBANK=" + wb);
+wordBank.setText(wb);
+TestEditorManager.setTestName(CTMTParser.getTestName());
+testName.setText(CTMTParser.getTestName());
+newHead.addElement("TESTNAME=" + CTMTParser.getTestName());
+headList.setModel(newHead);
+for(Question q : QArray.getList()){
+qListM.addElement(q);
+}
+qList.setModel(qListM);
+        }
+    }//GEN-LAST:event_loadCTMTActionPerformed
+
+    private void answerkeyOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerkeyOKActionPerformed
+        answerKeyPrompt.dispose();
+    }//GEN-LAST:event_answerkeyOKActionPerformed
+
+    private void testEditWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_testEditWindowClosing
+        closeTestEditor.show();
+        closeTestEditor.pack();
+    }//GEN-LAST:event_testEditWindowClosing
+
+    private void clearYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearYesActionPerformed
+        headList.setModel(new DefaultListModel());
+        qListM.clear();
+        reallyClear.dispose();
+    }//GEN-LAST:event_clearYesActionPerformed
+
+    private void clearNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearNoActionPerformed
+        reallyClear.dispose();
+    }//GEN-LAST:event_clearNoActionPerformed
+
+    private void exitTEYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitTEYesActionPerformed
+        closeTestEditor.dispose();
+        testEdit.dispose();
+    }//GEN-LAST:event_exitTEYesActionPerformed
+
+    private void exitTENoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitTENoActionPerformed
+        closeTestEditor.dispose();
+    }//GEN-LAST:event_exitTENoActionPerformed
+
+    private void testEditHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testEditHelpActionPerformed
+         if(Desktop.isDesktopSupported()){
+        try{Desktop.getDesktop().browse(new URI("file://user_doc/index.html"));
+            }catch (URISyntaxException | IOException ex) {
+                throwError("Something went wrong. Open \"index.html\" located in the user_doc folder.");
+                debugConText.append(LINESEP + "Unable to open help file url.");
+            }
+                
+        
+        } else{throwError("Something went wrong. Open \"index.html\" located in the user_doc folder.");
+}
+    }//GEN-LAST:event_testEditHelpActionPerformed
+
+    private void setAnswerEditting(boolean b){
+    if(!b){
+    delAnswer.disable();
+    addAnswer.disable();
+    }else{
+    delAnswer.enable();
+    addAnswer.enable();
+    }
+    }
+    
     private void finalizeTest(){
         if(addAnswer() == 0){return;}
     if(UserAnswerManager.hasNull()){
@@ -1980,34 +2677,53 @@ catch ( IOException e)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aboutButton;
     private javax.swing.JFrame aboutWindow;
+    private javax.swing.JButton addAnswer;
+    private javax.swing.JDialog addAnswerDialog;
+    private javax.swing.JButton addQuestionOK;
     private javax.swing.JPopupMenu advMenu;
     private javax.swing.JButton advTestButton;
     private javax.swing.JPopupMenu advTestMenu;
     private java.awt.Button advancedMenu;
+    private javax.swing.JDialog answerKeyPrompt;
+    private javax.swing.JList answerList;
     private javax.swing.JButton answerQ;
     private javax.swing.JFrame answerReview;
+    private javax.swing.JTextField answerTF;
+    private javax.swing.JButton answerkeyOK;
     private static javax.swing.JComboBox appendPeriod;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton cancelAddAnswer;
     private javax.swing.JButton changeAnswer;
+    private javax.swing.JButton clearNo;
+    private javax.swing.JButton clearTest;
+    private javax.swing.JButton clearYes;
     private javax.swing.JButton closeGo;
     private javax.swing.JDialog closePrompt;
+    private javax.swing.JDialog closeTestEditor;
     private javax.swing.JButton createATest;
     private javax.swing.JFrame debugCon;
     private static javax.swing.JTextArea debugConText;
     private javax.swing.JFileChooser debugExporter;
     private javax.swing.JMenuItem debugMode;
+    private javax.swing.JButton delAnswer;
+    private javax.swing.JButton delQ;
     private javax.swing.JRadioButton direct;
+    private javax.swing.JButton down;
     private static javax.swing.JTextField driveFolderRoot;
     private javax.swing.JFrame drivePrompt;
     private static javax.swing.JTextField driveSubFolder;
     private javax.swing.JDialog editHead;
+    private javax.swing.JButton editQ;
     private static javax.swing.JDialog errorBox;
     private java.awt.Button errorClose;
     private static javax.swing.JTextPane errorText;
     private static javax.swing.JLabel errorTextold;
+    private javax.swing.JButton exitTENo;
+    private javax.swing.JButton exitTEYes;
     private static java.awt.Button exportDebug;
     private javax.swing.JFrame finalizeTest;
     private javax.swing.JButton finalizeTestReal;
+    private javax.swing.JButton finishTestEdit;
     private javax.swing.JFrame freeResp;
     private java.awt.Button freeSubmit;
     private java.awt.TextArea freeText;
@@ -2017,14 +2733,8 @@ catch ( IOException e)
     private static javax.swing.JList headList;
     private javax.swing.JButton headerEdit;
     private javax.swing.JLabel img;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2041,7 +2751,17 @@ catch ( IOException e)
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2060,6 +2780,7 @@ catch ( IOException e)
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
@@ -2071,28 +2792,42 @@ catch ( IOException e)
     private javax.swing.JMenuItem jumpTo;
     private javax.swing.JButton jumpWhat;
     private javax.swing.JList listUnanswered;
+    private javax.swing.JButton loadCTMT;
     private javax.swing.JButton loadResults;
     private javax.swing.JFrame missingAnswers;
+    private javax.swing.JButton newQ;
     private javax.swing.JButton nextQuestion;
+    private javax.swing.JButton okAddAnswer;
+    private javax.swing.JFileChooser openATest;
     private javax.swing.JTextField periodField;
     private javax.swing.JButton previousQuestion;
+    private javax.swing.JTextField qImgEdit;
     private javax.swing.JDialog qJump;
     private static javax.swing.JList qList;
+    private javax.swing.JTextField qMaxAnswersEdit;
+    private javax.swing.JTextField qTagEdit;
+    private javax.swing.JTextField qTextEdit;
+    private javax.swing.JComboBox qTypeBox;
+    private javax.swing.JDialog questionEdit;
     private javax.swing.JLabel questionNum;
     private javax.swing.JLabel questionText;
     private static javax.swing.JComboBox random;
+    private javax.swing.JDialog reallyClear;
     private javax.swing.JRadioButton relative;
     private java.awt.Button reviewQuestions;
     private java.awt.Button saveAnswers;
     private javax.swing.JFileChooser saveCTMA;
     private javax.swing.JButton saveHead;
+    private javax.swing.JFileChooser saveTestFC;
     private javax.swing.JMenuItem skipQuestion;
     private javax.swing.JRadioButton strict;
     private javax.swing.JButton subResponse;
     private javax.swing.JButton takeATest;
     private javax.swing.JFrame testEdit;
+    private javax.swing.JButton testEditHelp;
     private static javax.swing.JTextField testName;
     private javax.swing.JFrame testWindow;
+    private javax.swing.JButton up;
     private java.awt.Button uploadAnswers;
     private javax.swing.JMenuItem uploadFile;
     private javax.swing.JTextField userNameField;

@@ -19,6 +19,7 @@ public class QArray
     public static void init()
     {
         qArray = new ArrayList<>();
+        qArray.clear();
     }
     
     /**
