@@ -112,6 +112,9 @@ public class TestEditorManager {
     testQArray.remove(index);
     }
     
+    /**
+     * Fixes the question numbers.
+     */
     public static void fixQNums(){
     for(int i = 0; i < testQArray.size(); i++){
     Question q = testQArray.get(i);

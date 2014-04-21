@@ -89,7 +89,6 @@ public class CTMTParser
         forceFullScreen=0;
         testTimeLimit=0.0;
         numOfWBQ = 0;
-        qAnswers.clear();
         errors = "<HTML><BODY BGCOLOR=#D6D9DF>";
     }
 

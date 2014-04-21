@@ -1,4 +1,4 @@
-package Ciencias.Managers;
+package Ciencias.Misc;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
