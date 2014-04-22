@@ -22,15 +22,23 @@ public class CTMRConsolidator {
     
 private static ArrayList<String> head;
 private static ArrayList<AnsweredQuestion> questions;
+private static ArrayList<String[]> tempValidated;
 
 
     /**
      * Starts consolidating the CTMR file.
      */
     public static void consolidate(){
-        
+    head = new ArrayList<>();
+    questions = new ArrayList<>();
+    tempValidated = new ArrayList<>();
     for(int i = 0; i <QArray.getIndexes()+1; i++){
-    questions.add(new AnsweredQuestion(QArray.getQuestion(i),CTMAParser.getKey().getAnswerAtIndex(i),validateAnswer(QArray.getQuestion(i)))); 
+    Question q = QArray.getQuestion(i);
+    String ans = CTMAParser.getKey().getAnswerAtIndex(i);
+    validateAnswer(q);
+    
+    questions.add(new AnsweredQuestion(q,ans,tempValidated)); 
+    tempValidated.clear();
     }
     head.add("TESTNAME=" + CTMTParser.getTestName());
     head.add("ENABLEUSERNAMES=" + CTMTParser.getEnableUserNamesSetting());
@@ -66,10 +74,10 @@ private static ArrayList<AnsweredQuestion> questions;
     return questions;
     }
     
-    private static ArrayList<String[]> validateAnswer(Question q)
+    private static void validateAnswer(Question q)
     {
-    ArrayList<StudentAnswers> a = CTMAParser.getAnswerArray();
-    ArrayList<String[]> ans = new ArrayList<>();
+    ArrayList<StudentAnswers> a = new ArrayList(CTMAParser.getAnswerArray());
+    //ArrayList<String[]> ans = new ArrayList<>();
     int picked = 0;
     String names = "";
     String type = q.getType();
@@ -78,38 +86,38 @@ private static ArrayList<AnsweredQuestion> questions;
         if(q.getMaxAnswers() > 1){type = "MAXANSWERS"; break;}
         for(int i = 0; i < q.getAnswers().size(); i++){
         for(StudentAnswers s : a){
-        if(Integer.parseInt(s.getAnswerAtIndex(q.getQuestionNumber()+1)) == i ){
+        if(Integer.parseInt(s.getAnswerAtIndex(q.getQuestionNumber()-1)) == i ){
         picked++;
         names = names + s.getName() + ", ";
         }
         }
-        ans.add(new String[]{q.getAnswers().get(i),""+picked,names});
+        tempValidated.add(new String[]{q.getAnswers().get(i),""+picked,names});
         picked = 0;
         names = "";
         }
-        return ans;
+        return;
         
         case "FREERESPONSE":  
             for(StudentAnswers sa : a){
-            ans.add(new String[]{sa.getAnswerAtIndex(q.getQuestionNumber()-1),"0",sa.getName()});
+            tempValidated.add(new String[]{sa.getAnswerAtIndex(q.getQuestionNumber()-1),"0",sa.getName()});
             }
-            return ans;
+            return;
             
         case "MAXANSWERS":
         for(int i = 0; i < q.getAnswers().size(); i++){
         for(StudentAnswers s : a){
-        String[] split = s.getAnswerAtIndex(q.getQuestionNumber()+1).split(",");
+        String[] split = s.getAnswerAtIndex(q.getQuestionNumber()-1).split(",");
         
         if(Arrays.asList(split).contains(""+i)){
         picked++;
         names = names + s.getName() + ", ";
         }
         }
-        ans.add(new String[]{q.getAnswers().get(i),""+picked,names});
+        tempValidated.add(new String[]{q.getAnswers().get(i),""+picked,names});
         picked = 0;
         names = "";
         }
-        return ans;
+        return;
             
         case "WORDBANK":
         for(String w : WordBankMan.getPristineWordBank()){
@@ -119,17 +127,24 @@ private static ArrayList<AnsweredQuestion> questions;
         names = names + s.getName() + ", ";
         }
         }
-        ans.add(new String[]{w,""+picked,names});
+        tempValidated.add(new String[]{w,""+picked,names});
         picked = 0;
         names = "";
-        
-        }
-        return ans;
-            
+        } 
     }
+     for(int i = 0; i < q.getAnswers().size(); i++){
+        for(StudentAnswers s : a){
+        String[] split = s.getAnswerAtIndex(q.getQuestionNumber()-1).split(",");
         
-        
-    return null;
+        if(Arrays.asList(split).contains(""+i)){
+        picked++;
+        names = names + s.getName() + ", ";
+        }
+        }
+        tempValidated.add(new String[]{q.getAnswers().get(i),""+picked,names});
+        picked = 0;
+        names = "";
+        }
     }
     
 }

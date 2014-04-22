@@ -1,5 +1,6 @@
 package Ciencias.Core;
 
+import Ciencias.Managers.QArray;
 import java.util.ArrayList;
 
 /**
@@ -32,6 +33,26 @@ public class AnsweredQuestion {
        qText=q.getText();
        correctAnswer=cAns;
        answers = new ArrayList<>(ansList); 
+    }
+    
+    /**
+     * Creates an answered question object without a Question object available.
+     * @param text The question's text
+     * @param img The question's image.
+     * @param tag The question's tag
+     * @param num The question's number
+     * @param correctAns The correct answer to the question
+     * @param type The type of question
+     * @param ans An array list containing answers. (index 0 is the answer itself, index 1 is how many students picked the answer, and index 2 is a comma separated list of student's names who picked that answer)
+     */
+    public AnsweredQuestion(String text, String img, String tag, int num, String correctAns, String type, ArrayList<String[]> ans){
+    qTag=tag;
+    qStyle=type;
+    qNum=num;
+    qImg=img;
+    qText=text;
+    correctAnswer=correctAns;
+    answers = new ArrayList<>(ans); 
     }
     
     /**
@@ -123,12 +144,13 @@ public class AnsweredQuestion {
      */
     public int getQuestionGraphPosition(){
     if(this.getType().equals("FREERESPONSE")){return -1;}
-    if(this.getType().equals("WORDBANK") || this.getType().equals("MULTIPLECHOICE")){
+    if(this.getType().equals("WORDBANK") || QArray.getQuestion(qNum-1).getMaxAnswers() > 1){
     for(int i = 0; i < this.answers.size(); i++){
-    if(answers.get(i)[0].equals(correctAnswer)){return Integer.parseInt(answers.get(i)[1]); }
+    if(getAnswer(i).equals(correctAnswer)){return getNumOfStudentsWhoAnswered(i); }
+    else{return 0;}
+    }}
+    if(this.getType().equals("MULTIPLECHOICE")){
+    return getNumOfStudentsWhoAnswered(Integer.parseInt(getCorrectAnswer()));}
+    return 0;
     }
-    }
-       return 0; 
-    }
-    
     }

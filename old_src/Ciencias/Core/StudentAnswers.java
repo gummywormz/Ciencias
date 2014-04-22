@@ -22,13 +22,17 @@ public class StudentAnswers {
      * @param pd The period of this student
      */
     public StudentAnswers( String user, ArrayList<String[]> ans, int pd){
-    answers = ans;
+    answers = new ArrayList<>(ans);
     userName = user;
     periodNum = pd;
     }
     
+    /**
+     * Constructs a StudentAnswers object to be used as the answer key.
+     * @param a The correct answers
+     */
     public StudentAnswers(ArrayList<String[]> a){
-    answers = a;
+    answers = new ArrayList<>(a);
     periodNum = -1;
     userName = "Key";
     }

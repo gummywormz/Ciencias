@@ -54,7 +54,7 @@ public class CTMTParser
                 linenum++;
                 if((ln1.startsWith("@")) || (ln1.length() == 0)){}
                 else if(ln1.equals("[START_HEAD]")){break;}
-                else{MainWindow.throwError("No Head Found!" + ln1);return;}
+                else{MainWindow.throwError("No Head Found! At line: " + ln1);return;}
             }
             //qWordBank=new ArrayList<>();
             while((ln1 = in.readLine()) != null && !ln1.equals("[END_HEAD]")){linenum++;parseHead(ln1);}

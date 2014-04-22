@@ -118,11 +118,11 @@ public class CTMAParser {
            BufferedReader in = new BufferedReader(new FileReader(f));
            String ln1 = in.readLine();
            
-           if(ln1.startsWith("[")){
+           if(!ln1.startsWith("[")){
            MainWindow.throwError("Invalid CTMA File found. Error on file: " + f.getName());
            }
            
-           String[] head = ln1.split("PERIOD");
+           String[] head = ln1.split("PERIOD ");
            head[0] = head[0].replace("[","");
            head[1] = head[1].replace("]","");
            name = head[0];
@@ -132,7 +132,7 @@ public class CTMAParser {
            String[] ans = ln1.split("=");
            String realAns = ans[1];
            int index = Integer.parseInt(ans[0]);
-           String style = QArray.getQuestion(index).getType();
+           String style = QArray.getQuestion(index-1).getType();
            tempAns.add(new String[]{realAns,style});
            
            }
@@ -166,7 +166,7 @@ public class CTMAParser {
     String[] realAns = ln1.split("=");
     String ans = realAns[1];
     int index = Integer.parseInt(realAns[0]);
-    String style = QArray.getQuestion(index).getType();
+    String style = QArray.getQuestion(index-1).getType();
     tempKey.add(new String[] {ans,style});
     
     }while ((ln1 = in.readLine())!=null);

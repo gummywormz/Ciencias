@@ -5,12 +5,14 @@
  */
 
 package Ciencias.GUI;
+import Ciencias.Core.AnsweredQuestion;
 import Ciencias.Core.Question;
 import Ciencias.Managers.GoogleDriveManager;
 import Ciencias.Managers.QArray;
 import Ciencias.Managers.TestEditorManager;
 import Ciencias.Managers.UserAnswerManager;
 import Ciencias.Managers.WordBankMan;
+import Ciencias.Misc.CTMRConsolidator;
 import Ciencias.Parsers.CTMTParser;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -29,7 +31,10 @@ import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import Ciencias.Misc.NumberVerifier;
+import Ciencias.Parsers.CTMAParser;
 import java.awt.event.ItemEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The main GUI window
@@ -248,11 +253,13 @@ private boolean enableAnswerEdit = true;
         singleCTMA = new javax.swing.JTextField();
         jLabel40 = new javax.swing.JLabel();
         singleCTMALoad = new javax.swing.JButton();
+        loadResultsOK = new javax.swing.JButton();
         loadCTMTGroup = new javax.swing.ButtonGroup();
         ctmrLoader = new javax.swing.JFileChooser();
         ctmaDirFC = new javax.swing.JFileChooser();
         singleCTMAFC = new javax.swing.JFileChooser();
         answerKeyFC = new javax.swing.JFileChooser();
+        ctmrSave = new javax.swing.JFileChooser();
         takeATest = new javax.swing.JButton();
         createATest = new javax.swing.JButton();
         loadResults = new javax.swing.JButton();
@@ -1595,7 +1602,6 @@ private boolean enableAnswerEdit = true;
 
         addAnswerDialog.setTitle("Ciencias Test Manager - Add Answer");
         addAnswerDialog.setMinimumSize(new java.awt.Dimension(400, 140));
-        addAnswerDialog.setPreferredSize(new java.awt.Dimension(400, 140));
         addAnswerDialog.setResizable(false);
 
         okAddAnswer.setText("OK");
@@ -1786,6 +1792,7 @@ private boolean enableAnswerEdit = true;
 
         loadTest.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         loadTest.setTitle("Ciencias Test Manager - Load Results");
+        loadTest.setResizable(false);
 
         jLabel34.setText("Chose the method of loading");
 
@@ -1797,12 +1804,27 @@ private boolean enableAnswerEdit = true;
         jLabel35.setText("Test (CTMT File):");
 
         ctmtLoad.setText("Browse...");
+        ctmtLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ctmtLoadActionPerformed(evt);
+            }
+        });
 
         jLabel36.setText("Answer Key (CTMA File):");
 
         keyLoad.setText("Browse...");
+        keyLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyLoadActionPerformed(evt);
+            }
+        });
 
         ctmaDirLoad.setText("Browse...");
+        ctmaDirLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ctmaDirLoadActionPerformed(evt);
+            }
+        });
 
         jLabel37.setText("Directory of Student Answers:");
 
@@ -1862,6 +1884,11 @@ private boolean enableAnswerEdit = true;
         jLabel38.setText("Results (CTMR File):");
 
         browseCTMR.setText("Browse...");
+        browseCTMR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseCTMRActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1899,10 +1926,20 @@ private boolean enableAnswerEdit = true;
         jLabel39.setText("Answer Key (CTMA File):");
 
         keyLoadSingle.setText("Browse...");
+        keyLoadSingle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyLoadSingleActionPerformed(evt);
+            }
+        });
 
         jLabel40.setText("Student Answers (CTMA File):");
 
         singleCTMALoad.setText("Browse...");
+        singleCTMALoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                singleCTMALoadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1948,23 +1985,33 @@ private boolean enableAnswerEdit = true;
                 .addContainerGap())
         );
 
+        loadResultsOK.setText("OK");
+        loadResultsOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadResultsOKActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout loadTestLayout = new javax.swing.GroupLayout(loadTest.getContentPane());
         loadTest.getContentPane().setLayout(loadTestLayout);
         loadTestLayout.setHorizontalGroup(
             loadTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadTestLayout.createSequentialGroup()
+            .addGroup(loadTestLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(loadTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, loadTestLayout.createSequentialGroup()
+                .addGroup(loadTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(loadTestLayout.createSequentialGroup()
                         .addGroup(loadTestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel34)
                             .addComponent(ctmaRB)
                             .addComponent(ctmrRB)
                             .addComponent(oneCTMARB))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadTestLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(loadResultsOK)))
                 .addContainerGap())
         );
         loadTestLayout.setVerticalGroup(
@@ -1984,7 +2031,9 @@ private boolean enableAnswerEdit = true;
                 .addComponent(oneCTMARB)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(loadResultsOK)
+                .addContainerGap())
         );
 
         ctmrLoader.setAcceptAllFileFilterUsed(false);
@@ -2001,6 +2050,10 @@ private boolean enableAnswerEdit = true;
 
         answerKeyFC.setDialogTitle("Ciencias Test Manager - Load Answer Key");
         answerKeyFC.setFileFilter(new FileNameExtensionFilter("CTMA Files", new String[] { "ctma", "CTMA" }));
+
+        ctmrSave.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        ctmrSave.setDialogTitle("Ciencias Test Manager - Save Results");
+        ctmrSave.setFileFilter(new FileNameExtensionFilter("CTMR Files", new String[] { "CTMR", "ctmr" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ciencias Test Manager");
@@ -2283,7 +2336,8 @@ nextQuestion.setText("Next ->");
     }//GEN-LAST:event_createATestActionPerformed
 
     private void loadResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadResultsActionPerformed
-        // TODO add your handling code here:
+        loadTest.show();
+        loadTest.pack();
     }//GEN-LAST:event_loadResultsActionPerformed
 
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
@@ -2422,7 +2476,7 @@ catch ( IOException e)
         if(didItWork == 1){throwError("Your period number contains illegal characters or is too long.");return;}
             ArrayList<String> sortedAnswers = UserAnswerManager.sortAnswers();
             try {
-                FileWriter f = new FileWriter(sFile.getParent() + "_" + userNameField.getText() + ".ctma");
+                FileWriter f = new FileWriter(sFile.getParent() + CTMTParser.getTestName() +  "_" + userNameField.getText() + ".ctma");
                 debugConText.append(LINESEP + "File Path: " + sFile.getParent() + "_" + userNameField.getText() + ".ctma");
                 f.write("[" + userNameField.getText() +" PERIOD " + periodField.getText() + "]");
                 f.write(LINESEP);
@@ -2580,7 +2634,7 @@ catch ( IOException e)
         didItWork = TextRenderingAssist.testForBadCharacters(periodField.getText());
         if(didItWork == 1){throwError("Your period number contains illegal characters or is too long.");return;}
             ArrayList<String> sortedAnswers = UserAnswerManager.sortAnswers();
-            String fileUpload = sFile.getParent() + "_" + userNameField.getText() + ".ctma";
+            String fileUpload = sFile.getParent() + CTMTParser.getTestName() + "_" + userNameField.getText() + ".ctma";
             try {
                 FileWriter f = new FileWriter(fileUpload);
                 debugConText.append(LINESEP + fileUpload);
@@ -2774,11 +2828,6 @@ catch ( IOException e)
                fw.write(LINESEP);
                fw.write("DRIVESUBFOLDER="+TestEditorManager.getDriveSubFolder());
                fw.write(LINESEP);
-               String ctma = saveTestFC.getSelectedFile().getName();
-               ctma = ctma.replace(".ctmt",".ctma");
-               ctma = ctma.replace(".CTMT",".CTMA");
-               fw.write("CTMANAME="+ctma);
-               fw.write(LINESEP);
                fw.write("ENABLEUSERNAMES="+TestEditorManager.getEnableUserNames());
                fw.write(LINESEP);
                fw.write("[END_HEAD]");
@@ -2902,11 +2951,115 @@ qList.setModel(qListM);
 
     private void clearTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearTestActionPerformed
         reallyClear.show();
+        reallyClear.pack();
     }//GEN-LAST:event_clearTestActionPerformed
 
     private void addAnswerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAnswerActionPerformed
         if(enableAnswerEdit){}addAnswerDialog.show();
     }//GEN-LAST:event_addAnswerActionPerformed
+
+    private void ctmtLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ctmtLoadActionPerformed
+        int returnVal = openATest.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File ctmt = openATest.getSelectedFile();
+        ctmtTF.setText(ctmt.toString());
+        }
+    }//GEN-LAST:event_ctmtLoadActionPerformed
+
+    private void keyLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyLoadActionPerformed
+        int returnVal = answerKeyFC.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File ctma = answerKeyFC.getSelectedFile();
+        keyTF.setText(ctma.toString());
+        }
+    }//GEN-LAST:event_keyLoadActionPerformed
+
+    private void keyLoadSingleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyLoadSingleActionPerformed
+        int returnVal = answerKeyFC.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File ctma = answerKeyFC.getSelectedFile();
+        singleKey.setText(ctma.toString());
+        }
+    }//GEN-LAST:event_keyLoadSingleActionPerformed
+
+    private void singleCTMALoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleCTMALoadActionPerformed
+        int returnVal = singleCTMAFC.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File ctma = singleCTMAFC.getSelectedFile();
+        singleCTMA.setText(ctma.toString());
+        }
+    }//GEN-LAST:event_singleCTMALoadActionPerformed
+
+    private void ctmaDirLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ctmaDirLoadActionPerformed
+        int returnVal = ctmaDirFC.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File ctma = ctmaDirFC.getSelectedFile();
+        dirTF.setText(ctma.toString());
+        }
+    }//GEN-LAST:event_ctmaDirLoadActionPerformed
+
+    private void browseCTMRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseCTMRActionPerformed
+        int returnVal = ctmrLoader.showOpenDialog(MainWindow.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File ctma = ctmrLoader.getSelectedFile();
+        loadCTMR.setText(ctma.toString());
+        }
+    }//GEN-LAST:event_browseCTMRActionPerformed
+
+    private void loadResultsOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadResultsOKActionPerformed
+        if(ctmaRB.isSelected()){
+            try {
+                CTMTParser.startParsing(new File(ctmtTF.getText()));
+                CTMAParser.parseKey(new File(keyTF.getText()));
+                CTMAParser.startParsing(new File(dirTF.getText()));
+                CTMRConsolidator.consolidate();
+                int returnVal = ctmrSave.showSaveDialog(MainWindow.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File ctmr = ctmrSave.getSelectedFile();
+                String realCTMR = ctmr + ".ctmr";
+                FileWriter fw = new FileWriter(realCTMR);
+                fw.write("[START_OVERVIEW]");
+                fw.write(LINESEP);
+                for(String s : CTMRConsolidator.getHead()){
+                fw.write(s);
+                fw.write(LINESEP);
+                }
+                fw.write("[END_OVERVIEW]");
+                fw.write(LINESEP);
+                
+                for(AnsweredQuestion a : CTMRConsolidator.getQuestions()){
+                fw.write("[START_QUESTION]");
+                fw.write(LINESEP);
+                fw.write("QUESTIONSTYLE="+a.getType());
+                fw.write(LINESEP);
+                fw.write("IMAGE=" + a.getImage());
+                fw.write(LINESEP);
+                fw.write("QUESTIONTEXT="+a.getText());
+                fw.write(LINESEP);
+                fw.write("QUESTIONNUMBER="+a.getQuestionNumber());
+                fw.write(LINESEP);
+                fw.write("CORRECTANSWER=" + a.getCorrectAnswer());
+                for(int i = 0; i<a.getAnswers().size(); i++){
+                fw.write(LINESEP);
+                fw.write("ANSWERCHOICE="+a.getAnswer(i));
+                fw.write(LINESEP);
+                fw.write("NUMOFSTUDENTSPICKED="+a.getNumOfStudentsWhoAnswered(i));
+                fw.write(LINESEP);
+                fw.write("USERNAMESOFPICKED="+a.getStudentsWhoAnswered(i));
+                }
+                fw.write(LINESEP);
+                fw.write("TAG=" + a.getTag());
+                fw.write(LINESEP);
+                fw.write("[END_QUESTION]");
+                fw.write(LINESEP);
+                }
+                fw.close();
+        }
+            } catch (IOException ex) {
+                throwError("Unable to read one or more of the files. Make sure they are not in use by any program and you have appropriate permissions to access these files.");
+            }
+        }
+    }//GEN-LAST:event_loadResultsOKActionPerformed
 
     private void setAnswerEditting(boolean b){
     if(!b){
@@ -3009,6 +3162,7 @@ qList.setModel(qListM);
     private javax.swing.JRadioButton ctmaRB;
     private javax.swing.JFileChooser ctmrLoader;
     private javax.swing.JRadioButton ctmrRB;
+    private javax.swing.JFileChooser ctmrSave;
     private javax.swing.JButton ctmtLoad;
     private javax.swing.JTextField ctmtTF;
     private javax.swing.JFrame debugCon;
@@ -3120,6 +3274,7 @@ qList.setModel(qListM);
     private javax.swing.JButton loadCTMT;
     private javax.swing.ButtonGroup loadCTMTGroup;
     private javax.swing.JButton loadResults;
+    private javax.swing.JButton loadResultsOK;
     private javax.swing.JFrame loadTest;
     private javax.swing.JFrame missingAnswers;
     private javax.swing.JButton newQ;
