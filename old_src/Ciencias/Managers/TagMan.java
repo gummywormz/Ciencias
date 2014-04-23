@@ -34,7 +34,7 @@ public class TagMan
     }
     
     /**
-     * Returns the specified question number and its tsg
+     * Returns the specified question number and its tag
      * @param index the index of the question (always question number - 1)
      * @return the question and tag at the index
      */

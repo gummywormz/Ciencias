@@ -7,6 +7,8 @@ import Ciencias.Managers.QArray;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
         
 
 /**
@@ -35,6 +37,14 @@ public class CTMAParser {
      */
     public static StudentAnswers getKey(){
     return key;
+    }
+    
+    /**
+     * Returns the first student's answers (for use with the view single CTMA option).
+     * @return the first student's answers.
+     */
+    public static StudentAnswers getStudentCTMA(){
+    return studentArray.get(0);
     }
     
     /**
@@ -99,6 +109,7 @@ public class CTMAParser {
      */
     public static void startParsing(File dir){
     resetItems();
+    studentArray.clear();
     File files[] = dir.listFiles();
     
     for(File f : files){
@@ -110,16 +121,29 @@ public class CTMAParser {
         }
     }
     }
-    
     }
     
-    private static void parseFile(File f) throws IOException{
+    /**
+     * Parses a single student CTMA file
+     * @param ctma The file to parse
+     */
+    public static void parseSingleCTMA(File ctma){
+        resetItems();
+        studentArray.clear();
         try {
-           BufferedReader in = new BufferedReader(new FileReader(f));
+            parseFile(ctma);
+        } catch (IOException ex) {
+            MainWindow.throwError("Unable to access a ctma file. Make sure it is not in use and you have proper permissions to access this file. Error on file: " + ctma.getName());
+        }
+    }
+    
+    private static void parseFile(File f2) throws IOException{
+        try {
+           BufferedReader in = new BufferedReader(new FileReader(f2));
            String ln1 = in.readLine();
            
            if(!ln1.startsWith("[")){
-           MainWindow.throwError("Invalid CTMA File found. Error on file: " + f.getName());
+           MainWindow.throwError("Invalid CTMA File found. Error on file: " + f2.getName());
            }
            
            String[] head = ln1.split("PERIOD ");
@@ -132,7 +156,8 @@ public class CTMAParser {
            String[] ans = ln1.split("=");
            String realAns = ans[1];
            int index = Integer.parseInt(ans[0]);
-           String style = QArray.getQuestion(index-1).getType();
+           String style;
+           try{style = QArray.getQuestion(index-1).getType();}catch(NullPointerException e){style = "None";}
            tempAns.add(new String[]{realAns,style});
            
            }
@@ -166,7 +191,8 @@ public class CTMAParser {
     String[] realAns = ln1.split("=");
     String ans = realAns[1];
     int index = Integer.parseInt(realAns[0]);
-    String style = QArray.getQuestion(index-1).getType();
+    String style;
+    try{style = QArray.getQuestion(index-1).getType();}catch(NullPointerException e){style = "None";}
     tempKey.add(new String[] {ans,style});
     
     }while ((ln1 = in.readLine())!=null);
@@ -174,7 +200,11 @@ public class CTMAParser {
     
     
     }catch (FileNotFoundException ex) {
-        MainWindow.throwError("Unable to find the answer key file.");
+        try {
+            MainWindow.throwError("Unable to find the answer key file." + k.getCanonicalPath());
+        } catch (IOException ex1) {
+            Logger.getLogger(CTMAParser.class.getName()).log(Level.SEVERE, null, ex1);
+        }
         } catch (IOException ex) {
         MainWindow.throwError("Unable to access the answer key file. Make sure you have appropriate permissions and the file is not open in any application.");
         }

@@ -140,7 +140,9 @@ public class AnsweredQuestion {
     
     /**
      * Returns the amount of students who chose the correct answer 
+     * NOTE: This method is only used for the consolidation process. To get question graph posses from a CTMR file, use CTMRParser.getQuestionGraphPos
      * @return the amount of students who chose the correct answer
+     * @see Ciencias.Parsers.CTMRParser#getQuestionGraphPos(int) getQuestionGraphPos
      */
     public int getQuestionGraphPosition(){
     if(this.getType().equals("FREERESPONSE")){return -1;}
@@ -153,4 +155,10 @@ public class AnsweredQuestion {
     return getNumOfStudentsWhoAnswered(Integer.parseInt(getCorrectAnswer()));}
     return 0;
     }
+    
+    @Override
+    public String toString(){
+    return "Question " + qNum;
+    }
+    
     }

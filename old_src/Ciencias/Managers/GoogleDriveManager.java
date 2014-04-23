@@ -1,10 +1,5 @@
 package Ciencias.Managers;
 
-/**
- * Manages uploading and downloading from Google Drive
- * @author Paul Alves
- * @version 3/23/2014
- */
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
@@ -26,6 +21,11 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Manages uploading and downloading from Google Drive
+ * @author Paul Alves
+ * @version 3/23/2014
+ */
 public class GoogleDriveManager {
   private static final String CLIENT_ID = "694783259053-dkma5ifs3lv01hvmurv2ujg8l72tj2a9.apps.googleusercontent.com";
   private static final String CLIENT_SECRET = "6fM0e3o9eOVDgdtcU2_E-Zdb";

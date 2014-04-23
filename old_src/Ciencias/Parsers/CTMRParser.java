@@ -40,6 +40,11 @@ public class CTMRParser {
     graphPosses = new ArrayList<>();
     questions = new ArrayList<>();
     answers = new ArrayList<>();
+    avgScore = 0;
+    highScore = 0;
+    lowScore = 0;
+    mostMissed = 0;
+    qNum = 0;
     try{
     BufferedReader in = new BufferedReader(new FileReader(ctmr));
     String ln = in.readLine();
@@ -79,10 +84,10 @@ public class CTMRParser {
     while(!(ln=in.readLine()).startsWith("TAG=")){//answerchoice
     String[] tempAns = new String[3];
     tempAns[0] = ln.split("=")[1];
-    in.readLine();
+    ln = in.readLine();
     tempAns[1] = ln.split("=")[1];
-    in.readLine();
-    tempAns[2] = ln.split("=")[1];
+    ln = in.readLine();
+    try{tempAns[2] = ln.split("=")[1];}catch(ArrayIndexOutOfBoundsException e){tempAns[2] = "None";}
     answers.add(tempAns);
     }
     qTag = ln.split("=")[1];
@@ -178,7 +183,7 @@ public class CTMRParser {
     /**
      * Returns a list of questions that have the specified tag
      * @param tag The tag to get
-     * @return An arraylist of questions matching the tag.
+     * @return An array list of questions matching the tag.
      */
     public static ArrayList<AnsweredQuestion> getTaggedQuestions(String tag){
     ArrayList<AnsweredQuestion> taggedQuestions = new ArrayList<>();
@@ -188,6 +193,14 @@ public class CTMRParser {
     }
     }
     return taggedQuestions;
+    }
+    
+    /**
+     * Returns the list of questions
+     * @return The list of questions
+     */
+    public static ArrayList<AnsweredQuestion> getQuestions(){
+    return questions;
     }
     
     }

@@ -7,8 +7,10 @@
 package Ciencias.GUI;
 import Ciencias.Core.AnsweredQuestion;
 import Ciencias.Core.Question;
+import Ciencias.Core.StudentAnswers;
 import Ciencias.Managers.GoogleDriveManager;
 import Ciencias.Managers.QArray;
+import Ciencias.Managers.TagMan;
 import Ciencias.Managers.TestEditorManager;
 import Ciencias.Managers.UserAnswerManager;
 import Ciencias.Managers.WordBankMan;
@@ -32,9 +34,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import Ciencias.Misc.NumberVerifier;
 import Ciencias.Parsers.CTMAParser;
+import Ciencias.Parsers.CTMRParser;
 import java.awt.event.ItemEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * The main GUI window
@@ -63,6 +68,7 @@ private String frText;
 private DefaultListModel qListM = new DefaultListModel();
 private DefaultListModel ansListM = new DefaultListModel();
 private boolean enableAnswerEdit = true;
+private ArrayList<AnsweredQuestion> resultsView;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -260,6 +266,39 @@ private boolean enableAnswerEdit = true;
         singleCTMAFC = new javax.swing.JFileChooser();
         answerKeyFC = new javax.swing.JFileChooser();
         ctmrSave = new javax.swing.JFileChooser();
+        resultsViewer = new javax.swing.JFrame();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        results = new javax.swing.JList();
+        viewQuestion = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel41 = new javax.swing.JLabel();
+        avgScore = new javax.swing.JLabel();
+        highScore = new javax.swing.JLabel();
+        lowScore = new javax.swing.JLabel();
+        mostMissed = new javax.swing.JLabel();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        qGraph = new javax.swing.JTextArea();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
+        sortBy = new javax.swing.JButton();
+        questionViewer = new javax.swing.JFrame();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        questionInfo = new javax.swing.JTextArea();
+        jScrollPane15 = new javax.swing.JScrollPane();
+        qTextInfo = new javax.swing.JLabel();
+        sortByDialog = new javax.swing.JDialog();
+        tagSort = new javax.swing.JRadioButton();
+        tagBox = new javax.swing.JComboBox();
+        percentSort = new javax.swing.JRadioButton();
+        sortPercent = new javax.swing.JTextField();
+        sortOK = new javax.swing.JButton();
+        showAll = new javax.swing.JRadioButton();
+        sortGroup = new javax.swing.ButtonGroup();
+        viewCTMA = new javax.swing.JFrame();
+        jScrollPane16 = new javax.swing.JScrollPane();
+        ctmaTable = new javax.swing.JTable();
+        studentInfo = new javax.swing.JLabel();
+        answerKeyFCTest = new javax.swing.JFileChooser();
         takeATest = new javax.swing.JButton();
         createATest = new javax.swing.JButton();
         loadResults = new javax.swing.JButton();
@@ -2055,6 +2094,379 @@ private boolean enableAnswerEdit = true;
         ctmrSave.setDialogTitle("Ciencias Test Manager - Save Results");
         ctmrSave.setFileFilter(new FileNameExtensionFilter("CTMR Files", new String[] { "CTMR", "ctmr" }));
 
+        resultsViewer.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        resultsViewer.setTitle("Ciencias Test Manager - View Results");
+
+        results.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        results.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane12.setViewportView(results);
+
+        viewQuestion.setText("View");
+        viewQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewQuestionActionPerformed(evt);
+            }
+        });
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel41.setText("Overview:");
+
+        avgScore.setText("Average Score: ");
+
+        highScore.setText("Highest Score: ");
+
+        lowScore.setText("Lowest Score: ");
+
+        mostMissed.setText("Most Missed Question:");
+
+        qGraph.setEditable(false);
+        qGraph.setColumns(20);
+        qGraph.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
+        qGraph.setRows(5);
+        jScrollPane13.setViewportView(qGraph);
+
+        jLabel46.setText("Question Overview:");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel41)
+                            .addComponent(avgScore)
+                            .addComponent(highScore)
+                            .addComponent(lowScore)
+                            .addComponent(mostMissed)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(253, 253, 253)
+                        .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(464, 464, 464)
+                        .addComponent(jLabel46)))
+                .addContainerGap(300, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel41)
+                .addGap(18, 18, 18)
+                .addComponent(avgScore)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(highScore)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lowScore)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mostMissed)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jLabel46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jLabel47.setText("View Individual Questions:");
+
+        sortBy.setText("Sort by...");
+        sortBy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortByActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout resultsViewerLayout = new javax.swing.GroupLayout(resultsViewer.getContentPane());
+        resultsViewer.getContentPane().setLayout(resultsViewerLayout);
+        resultsViewerLayout.setHorizontalGroup(
+            resultsViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(resultsViewerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(resultsViewerLayout.createSequentialGroup()
+                .addGroup(resultsViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(resultsViewerLayout.createSequentialGroup()
+                        .addGap(385, 385, 385)
+                        .addGroup(resultsViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(resultsViewerLayout.createSequentialGroup()
+                                .addComponent(viewQuestion)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(sortBy))
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(resultsViewerLayout.createSequentialGroup()
+                        .addGap(437, 437, 437)
+                        .addComponent(jLabel47)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        resultsViewerLayout.setVerticalGroup(
+            resultsViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultsViewerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel47)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(resultsViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viewQuestion)
+                    .addComponent(sortBy))
+                .addGap(12, 12, 12))
+        );
+
+        questionViewer.setTitle("Ciencias Test Manager - View Question");
+
+        questionInfo.setEditable(false);
+        questionInfo.setColumns(20);
+        questionInfo.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
+        questionInfo.setRows(5);
+        jScrollPane14.setViewportView(questionInfo);
+
+        qTextInfo.setText("Question # ");
+        qTextInfo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        qTextInfo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        qTextInfo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jScrollPane15.setViewportView(qTextInfo);
+
+        javax.swing.GroupLayout questionViewerLayout = new javax.swing.GroupLayout(questionViewer.getContentPane());
+        questionViewer.getContentPane().setLayout(questionViewerLayout);
+        questionViewerLayout.setHorizontalGroup(
+            questionViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, questionViewerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(questionViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
+                    .addComponent(jScrollPane15))
+                .addContainerGap())
+        );
+        questionViewerLayout.setVerticalGroup(
+            questionViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(questionViewerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane15, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        sortByDialog.setTitle("Ciencias Test Manager - Sort By");
+
+        sortGroup.add(tagSort);
+        tagSort.setText("Sort by Tag");
+
+        tagBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        sortGroup.add(percentSort);
+        percentSort.setText("Sort By Percent");
+
+        sortPercent.setInputVerifier(new NumberVerifier());
+
+        sortOK.setText("OK");
+        sortOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortOKActionPerformed(evt);
+            }
+        });
+
+        sortGroup.add(showAll);
+        showAll.setText("Show All");
+
+        javax.swing.GroupLayout sortByDialogLayout = new javax.swing.GroupLayout(sortByDialog.getContentPane());
+        sortByDialog.getContentPane().setLayout(sortByDialogLayout);
+        sortByDialogLayout.setHorizontalGroup(
+            sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sortByDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(sortByDialogLayout.createSequentialGroup()
+                        .addGroup(sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(percentSort)
+                            .addComponent(tagSort))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addGroup(sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sortPercent, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tagBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sortByDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(sortOK))
+                    .addGroup(sortByDialogLayout.createSequentialGroup()
+                        .addComponent(showAll)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        sortByDialogLayout.setVerticalGroup(
+            sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sortByDialogLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tagSort)
+                    .addComponent(tagBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(sortByDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(percentSort)
+                    .addComponent(sortPercent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(showAll)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sortOK)
+                .addContainerGap())
+        );
+
+        viewCTMA.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        viewCTMA.setTitle("Ciencias Test Manager - View Single Answer Set");
+
+        ctmaTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Student's Answer", "Correct Answer"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane16.setViewportView(ctmaTable);
+
+        studentInfo.setText("Student Info");
+
+        javax.swing.GroupLayout viewCTMALayout = new javax.swing.GroupLayout(viewCTMA.getContentPane());
+        viewCTMA.getContentPane().setLayout(viewCTMALayout);
+        viewCTMALayout.setHorizontalGroup(
+            viewCTMALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(viewCTMALayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jScrollPane16, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewCTMALayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(studentInfo)
+                .addGap(369, 369, 369))
+        );
+        viewCTMALayout.setVerticalGroup(
+            viewCTMALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(viewCTMALayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(studentInfo)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane16, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        answerKeyFCTest.setDialogTitle("Ciencias Test Manager - Choose Answer Key");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ciencias Test Manager");
         setResizable(false);
@@ -3059,7 +3471,100 @@ qList.setModel(qListM);
                 throwError("Unable to read one or more of the files. Make sure they are not in use by any program and you have appropriate permissions to access these files.");
             }
         }
+        
+        if(ctmrRB.isSelected()){
+            try {
+                CTMRParser.parseCTMR(new File(loadCTMR.getText()));
+                avgScore.setText(avgScore.getText() + CTMRParser.getAverageScore());
+                highScore.setText(highScore.getText() + CTMRParser.getHighestScore());
+                lowScore.setText(lowScore.getText() + CTMRParser.getLowestScore());
+                mostMissed.setText(mostMissed.getText() + CTMRParser.getMostMissed());
+                resultsView = new ArrayList<>(CTMRParser.getQuestions());
+                DefaultListModel view = new DefaultListModel();
+               for(AnsweredQuestion a : resultsView){
+               qGraph.append("Question " + a.getQuestionNumber() + " was answered correctly by " + CTMRParser.getQuestionGraphPos(a.getQuestionNumber() - 1) + " students.");
+               qGraph.append(LINESEP);
+               view.addElement(a);
+               }
+               results.setModel(view);
+               resultsViewer.show();
+               resultsViewer.pack();
+            } catch (IOException ex) {
+                throwError("Unable to read the CTMR file. Make sure it is not in use by any program and you have appropriate permissions to access the file.");
+            }
+        }
+        
+        if(oneCTMARB.isSelected()){
+        CTMAParser.parseSingleCTMA(new File(singleCTMA.getText()));
+        CTMAParser.parseKey(new File(singleKey.getText()));
+        StudentAnswers a =  CTMAParser.getStudentCTMA();
+        studentInfo.setText(a.getName() + " Period " + a.getPeriod());
+        
+        for(int i = 0; i< a.getSize(); i++){
+        ctmaTable.setValueAt(a.getAnswerAtIndex(i), i, 0);
+        ctmaTable.setValueAt(CTMAParser.getKey().getAnswerAtIndex(i), i, 1);
+        }
+        viewCTMA.show();
+        viewCTMA.pack();
+        }
     }//GEN-LAST:event_loadResultsOKActionPerformed
+
+    private void viewQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewQuestionActionPerformed
+    if(results.isSelectionEmpty()){
+    throwError("Please select a question!");
+    return;
+    }
+    AnsweredQuestion a = (AnsweredQuestion) results.getSelectedValue();
+    questionInfo.setText("");
+    qTextInfo.setText("Question # " + a.getQuestionNumber() +": " + TextRenderingAssist.prepareText(a.getText(), 80));
+    questionInfo.append("Correct Answer is choice: " + a.getCorrectAnswer() + LINESEP);
+    for(int i = 0; i<a.getAnswers().size(); i++){
+    questionInfo.append("Answer: " + a.getAnswer(i) + LINESEP);
+    questionInfo.append("Students who chose this answer: " + a.getNumOfStudentsWhoAnswered(i) + LINESEP);
+    if(CTMRParser.getEnableUserNames() == 1){questionInfo.append("Users:" + a.getStudentsWhoAnswered(i) + LINESEP);}
+    questionInfo.append(LINESEP);
+    }
+    questionViewer.show();
+    questionViewer.pack();
+    }//GEN-LAST:event_viewQuestionActionPerformed
+
+    private void sortByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortByActionPerformed
+        DefaultComboBoxModel c = new DefaultComboBoxModel();
+        for(String[] s : TagMan.getList()){
+        c.addElement(s[1]);
+        }
+        tagBox.setModel(c);
+        sortByDialog.show();
+        sortByDialog.pack();
+    }//GEN-LAST:event_sortByActionPerformed
+
+    private void sortOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortOKActionPerformed
+        DefaultListModel lm = new DefaultListModel();
+        if(tagSort.isSelected()){
+        for(AnsweredQuestion a : CTMRParser.getTaggedQuestions((String)tagBox.getSelectedItem())){
+        lm.addElement(a);
+        }
+        }
+        
+        if(percentSort.isSelected()){
+        double students = CTMRParser.getNumberOfStudents();
+        double percent = Integer.parseInt(sortPercent.getText()) / 100;
+        for(AnsweredQuestion a : CTMRParser.getQuestions()){
+        double correctAnswers = CTMRParser.getQuestionGraphPos(a.getQuestionNumber()-1);
+        if((correctAnswers / students) < percent){
+        lm.addElement(a);
+        }
+        }
+           
+        }
+        if(showAll.isSelected()){
+        for(AnsweredQuestion a : CTMRParser.getQuestions()){
+        lm.addElement(a);
+        }
+        }
+        results.setModel(lm);
+        sortByDialog.dispose(); 
+    }//GEN-LAST:event_sortOKActionPerformed
 
     private void setAnswerEditting(boolean b){
     if(!b){
@@ -3139,6 +3644,7 @@ qList.setModel(qListM);
     private javax.swing.JPopupMenu advTestMenu;
     private java.awt.Button advancedMenu;
     private javax.swing.JFileChooser answerKeyFC;
+    private javax.swing.JFileChooser answerKeyFCTest;
     private javax.swing.JDialog answerKeyPrompt;
     private javax.swing.JList answerList;
     private javax.swing.JButton answerQ;
@@ -3146,6 +3652,7 @@ qList.setModel(qListM);
     private javax.swing.JTextField answerTF;
     private javax.swing.JButton answerkeyOK;
     private static javax.swing.JComboBox appendPeriod;
+    private javax.swing.JLabel avgScore;
     private javax.swing.JButton browseCTMR;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelAddAnswer;
@@ -3160,6 +3667,7 @@ qList.setModel(qListM);
     private javax.swing.JFileChooser ctmaDirFC;
     private javax.swing.JButton ctmaDirLoad;
     private javax.swing.JRadioButton ctmaRB;
+    private javax.swing.JTable ctmaTable;
     private javax.swing.JFileChooser ctmrLoader;
     private javax.swing.JRadioButton ctmrRB;
     private javax.swing.JFileChooser ctmrSave;
@@ -3197,6 +3705,7 @@ qList.setModel(qListM);
     private javax.swing.JLabel googleLink;
     private static javax.swing.JList headList;
     private javax.swing.JButton headerEdit;
+    private javax.swing.JLabel highScore;
     private javax.swing.JLabel img;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -3235,6 +3744,9 @@ qList.setModel(qListM);
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -3245,9 +3757,15 @@ qList.setModel(qListM);
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane15;
+    private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -3276,39 +3794,57 @@ qList.setModel(qListM);
     private javax.swing.JButton loadResults;
     private javax.swing.JButton loadResultsOK;
     private javax.swing.JFrame loadTest;
+    private javax.swing.JLabel lowScore;
     private javax.swing.JFrame missingAnswers;
+    private javax.swing.JLabel mostMissed;
     private javax.swing.JButton newQ;
     private javax.swing.JButton nextQuestion;
     private javax.swing.JButton okAddAnswer;
     private javax.swing.JRadioButton oneCTMARB;
     private javax.swing.JFileChooser openATest;
+    private javax.swing.JRadioButton percentSort;
     private javax.swing.JTextField periodField;
     private javax.swing.JButton previousQuestion;
+    private javax.swing.JTextArea qGraph;
     private javax.swing.JTextField qImgEdit;
     private javax.swing.JDialog qJump;
     private static javax.swing.JList qList;
     private javax.swing.JTextField qMaxAnswersEdit;
     private javax.swing.JTextField qTagEdit;
     private javax.swing.JTextField qTextEdit;
+    private javax.swing.JLabel qTextInfo;
     private javax.swing.JComboBox qTypeBox;
     private javax.swing.JDialog questionEdit;
+    private javax.swing.JTextArea questionInfo;
     private javax.swing.JLabel questionNum;
     private javax.swing.JLabel questionText;
+    private javax.swing.JFrame questionViewer;
     private static javax.swing.JComboBox random;
     private javax.swing.JDialog reallyClear;
     private javax.swing.JRadioButton relative;
+    private javax.swing.JList results;
+    private javax.swing.JFrame resultsViewer;
     private java.awt.Button reviewQuestions;
     private java.awt.Button saveAnswers;
     private javax.swing.JFileChooser saveCTMA;
     private javax.swing.JButton saveHead;
     private javax.swing.JFileChooser saveTestFC;
+    private javax.swing.JRadioButton showAll;
     private javax.swing.JTextField singleCTMA;
     private javax.swing.JFileChooser singleCTMAFC;
     private javax.swing.JButton singleCTMALoad;
     private javax.swing.JTextField singleKey;
     private javax.swing.JMenuItem skipQuestion;
+    private javax.swing.JButton sortBy;
+    private javax.swing.JDialog sortByDialog;
+    private javax.swing.ButtonGroup sortGroup;
+    private javax.swing.JButton sortOK;
+    private javax.swing.JTextField sortPercent;
     private javax.swing.JRadioButton strict;
+    private javax.swing.JLabel studentInfo;
     private javax.swing.JButton subResponse;
+    private javax.swing.JComboBox tagBox;
+    private javax.swing.JRadioButton tagSort;
     private javax.swing.JButton takeATest;
     private javax.swing.JFrame testEdit;
     private javax.swing.JButton testEditHelp;
@@ -3319,6 +3855,8 @@ qList.setModel(qListM);
     private javax.swing.JMenuItem uploadFile;
     private javax.swing.JTextField userNameField;
     private static javax.swing.JComboBox userNames;
+    private javax.swing.JFrame viewCTMA;
+    private javax.swing.JButton viewQuestion;
     private static javax.swing.JTextField wordBank;
     // End of variables declaration//GEN-END:variables
 }
